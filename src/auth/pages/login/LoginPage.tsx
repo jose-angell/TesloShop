@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -6,9 +5,9 @@ import { Label } from "@/components/ui/label"
 import { CustomLogo } from "@/components/custom/CustomLogo"
 import { Link } from "react-router"
 
-export const LoginPage = ({ className, ...props }: React.ComponentProps<"div">) =>  {
+export const LoginPage = () =>  {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8">
@@ -31,7 +30,7 @@ export const LoginPage = ({ className, ...props }: React.ComponentProps<"div">) 
                 <Input id="password" type="password" required  placeholder="Contraseña"/>
               </div>
               <Button type="submit" className="w-full">
-                Login
+                Ingresar
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">O continua con </span>
