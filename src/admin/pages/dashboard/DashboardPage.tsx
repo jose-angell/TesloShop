@@ -1,4 +1,5 @@
 import ActivityFeed from '@/admin/Components/ActivityFeed';
+import { AdminTitle } from '@/admin/Components/AdminTitle';
 import Chart from '@/admin/Components/Chart';
 import QuickActions from '@/admin/Components/QuickActions';
 import StatCard from '@/admin/Components/StatCard';
@@ -55,14 +56,7 @@ import { Users, DollarSign, ShoppingCart, TrendingUp, Eye, BarChart3 } from 'luc
 export const DashboardPage = () => {
   return (
     <>
-      <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Welcome back, John! 👋
-            </h1>
-            <p className="text-gray-600">
-              Here's what's happening with your business today.
-            </p>
-          </div>
+          <AdminTitle title='Dashboard' subtitle='Aqui puedes ver el estado de tu negocio'/>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
