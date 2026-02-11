@@ -1,8 +1,25 @@
-import React from 'react'
+import { useState } from 'react';
+import { AdminSidebar } from '../Components/AdminSidebar';
+import { AdminHeader } from '../Components/AdminHeader';
+import { Outlet } from 'react-router';
 
 const AdminLayout = () => {
+   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   return (
-    <div>AdminLayout</div>
+    <div className="min-h-screen bg-gray-50 flex">
+      <AdminSidebar 
+        isCollapsed={sidebarCollapsed} 
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} 
+      />
+      
+      <div className="flex-1 flex flex-col">
+        <AdminHeader />
+        
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
+        </div>
+      </div>
   )
 }
 
