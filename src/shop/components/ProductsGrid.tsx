@@ -4,7 +4,7 @@ import { ProductCard } from './ProductCard'
 import { FilterSidebar } from './FilterSidebar'
 import { useSearchParams } from 'react-router'
 import { useState } from 'react'
-import type { Product } from '@/mocks/products.mock'
+import type { Product } from '@/interfaces/product.interface'
 interface Props {
     products: Product[]
 }
@@ -94,10 +94,11 @@ export const ProductsGrid = ({products}: Props) => {
                   <ProductCard
                     key={product.id}
                     id={product.id}
-                    name={product.name}
+                    name={product.title}
                     price={product.price}
-                    image={product.image}
-                    category={product.category}
+                    image={product.images[0]}
+                    category={product.gender}
+                    sizes={product.sizes}
                   />
                 ))}
                 </div>
