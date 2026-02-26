@@ -1,19 +1,19 @@
+import { useState, type FormEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CustomLogo } from "@/components/custom/CustomLogo"
 import { Link, useNavigate } from "react-router"
-import { useState, type FormEvent } from "react"
-import { loginAction } from "@/auth/actions/login.action"
 import { toast } from "sonner"
+import { useAuthStore } from "@/auth/store/auth.store"
 
 export const LoginPage = () =>  {
   const [isPosting, setIsPosting] = useState(false);  
   
   
   const navigate = useNavigate();
-
+  const {login} = useAuthStore();
 
   const handleLogin= async (event: FormEvent<HTMLFormElement>) => {
     setIsPosting(true);
@@ -22,15 +22,16 @@ export const LoginPage = () =>  {
   const formData = new FormData(event.target as HTMLFormElement); // Crea un objeto FormData a partir del formulario
   const email = formData.get('email') as string; // Obtiene el valor del campo de correo electrónico
   const password = formData.get('password') as string; // Obtiene el valor del campo de contraseña
-try{
-  const data = await loginAction(email, password);
-  localStorage.setItem('token', data.token);
-  navigate('/');
-}catch(error){
+
+  const isValid = await login(email, password);
+
+  if(isValid){
+    navigate('/');
+    return;
+  }
+
   toast.error('Correo y/o contraseña incorrectos');
-  console.error('Error al iniciar sesión:', error);
-}
-setIsPosting(false);
+  setIsPosting(false);
   
 }
 
