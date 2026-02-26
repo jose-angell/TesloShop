@@ -3,16 +3,34 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CustomLogo } from "@/components/custom/CustomLogo"
-import { Link } from "react-router"
-import type { FormEvent } from "react"
+import { Link, useNavigate } from "react-router"
+import { useState, type FormEvent } from "react"
+import { loginAction } from "@/auth/actions/login.action"
+import { toast } from "sonner"
 
 export const LoginPage = () =>  {
-const handleLogin= async (event: FormEvent<HTMLFormElement>) => {
+  const [isPosting, setIsPosting] = useState(false);  
+  
+  
+  const navigate = useNavigate();
+
+
+  const handleLogin= async (event: FormEvent<HTMLFormElement>) => {
+    setIsPosting(true);
+
   event.preventDefault();  /// Evita que el formulario se envíe de forma tradicional y recargue la página
   const formData = new FormData(event.target as HTMLFormElement); // Crea un objeto FormData a partir del formulario
   const email = formData.get('email') as string; // Obtiene el valor del campo de correo electrónico
   const password = formData.get('password') as string; // Obtiene el valor del campo de contraseña
-
+try{
+  const data = await loginAction(email, password);
+  localStorage.setItem('token', data.token);
+  navigate('/');
+}catch(error){
+  toast.error('Correo y/o contraseña incorrectos');
+  console.error('Error al iniciar sesión:', error);
+}
+setIsPosting(false);
   
 }
 
@@ -20,7 +38,7 @@ const handleLogin= async (event: FormEvent<HTMLFormElement>) => {
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmint={}>
+          <form className="p-6 md:p-8" onSubmit={(event) => handleLogin(event)}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 < CustomLogo />
@@ -39,7 +57,7 @@ const handleLogin= async (event: FormEvent<HTMLFormElement>) => {
                 </div>
                 <Input id="password" name="password" type="password" required  placeholder="Contraseña"/>
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isPosting} >
                 Ingresar
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
