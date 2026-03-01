@@ -18,22 +18,22 @@ export const LoginPage = () =>  {
   const handleLogin= async (event: FormEvent<HTMLFormElement>) => {
     setIsPosting(true);
 
-  event.preventDefault();  /// Evita que el formulario se envíe de forma tradicional y recargue la página
-  const formData = new FormData(event.target as HTMLFormElement); // Crea un objeto FormData a partir del formulario
-  const email = formData.get('email') as string; // Obtiene el valor del campo de correo electrónico
-  const password = formData.get('password') as string; // Obtiene el valor del campo de contraseña
+    event.preventDefault();  /// Evita que el formulario se envíe de forma tradicional y recargue la página
+    const formData = new FormData(event.target as HTMLFormElement); // Crea un objeto FormData a partir del formulario
+    const email = formData.get('email') as string; // Obtiene el valor del campo de correo electrónico
+    const password = formData.get('password') as string; // Obtiene el valor del campo de contraseña
 
-  const isValid = await login(email, password);
+    const isValid = await login(email, password);
 
-  if(isValid){
-    navigate('/');
-    return;
-  }
+    if(isValid){
+      navigate('/');
+      return;
+    }
 
-  toast.error('Correo y/o contraseña incorrectos');
-  setIsPosting(false);
+    toast.error('Correo y/o contraseña incorrectos');
+    setIsPosting(false);
   
-}
+ }
 
   return (
     <div className="flex flex-col gap-6">
