@@ -9,6 +9,7 @@ import { RegisterPage } from './src/auth/pages/register/RegisterPage';
 import { DashboardPage } from './src/admin/pages/dashboard/DashboardPage';
 import { AdminProductsPage } from './src/admin/pages/products/AdminProductsPage';
 import { ProductPage } from './src/shop/product/ProductPage';
+import { AdminRoute, NotAuthenticatedRoute } from "@/auth/routes/ProtectedRoutes";
 
 
 const AuthLayout = lazy(() => import('./src/auth/layouts/AuthLayout'));
@@ -37,7 +38,7 @@ export const AppRouter = createBrowserRouter([
     //Auth routes
     {
         path: "/auth",
-        element: <AuthLayout/>,
+        element: (<NotAuthenticatedRoute><AuthLayout/></NotAuthenticatedRoute>),
         children: [
              {
                 index:true,
@@ -57,7 +58,7 @@ export const AppRouter = createBrowserRouter([
     //Admin routes
     {
         path: "/admin",
-        element: <AdminLayout/>,
+        element: (<AdminRoute><AdminLayout/></AdminRoute>),
         children: [
              {
                 index:true,
