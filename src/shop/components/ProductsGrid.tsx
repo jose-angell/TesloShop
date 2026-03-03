@@ -11,7 +11,6 @@ interface Props {
 
 export const ProductsGrid = ({products}: Props) => {
 
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
   const viewMode = searchParams.get('view-mode') || 'grid';
@@ -96,7 +95,7 @@ export const ProductsGrid = ({products}: Props) => {
                     id={product.id}
                     name={product.title}
                     price={product.price}
-                    image={product.images[0]}
+                    image={product.imagenes[0]}
                     category={product.gender}
                     sizes={product.sizes}
                   />
