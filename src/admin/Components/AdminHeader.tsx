@@ -1,4 +1,4 @@
-import React, { use, useRef } from 'react';
+import React, {  useRef } from 'react';
 import { Search, Bell, MessageSquare, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
