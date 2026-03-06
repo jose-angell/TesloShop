@@ -5,6 +5,7 @@ import { X, SaveAll, Tag,  Upload } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
+import { cn } from '@/lib/utils';
 
 interface Props {
   title: string;
@@ -17,12 +18,15 @@ const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXL'];
 export const ProductForm = ({ title, subTitle, product }: Props) => {
     const [dragActive, setDragActive] = useState(false);
   
-  const {register} = useForm({
+  const {register, handleSubmit, formState: {errors}} = useForm({
     defaultValues: product,
 
   });
 
-
+//Todo: remover despuies
+const onSubmit = (prodictLike: Product) => {
+  
+}
   const addTag = () => {
     if (newTag.trim() && !product.tags.includes(newTag.trim())) {
       // setProduct((prev) => ({
@@ -114,12 +118,16 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                   </label>
                   <input
                     type="text"
-                    // value={product.title}
-                    //onChange={(e) => handleInputChange('title', e.target.value)}
-                    {...register('title')}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    {...register('title', {required: true})}
+                    className={
+                      cn(
+                        "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
+                        {'border-red-500 focus:ring-red-500' : errors.title}
+                      )
+                    }
                     placeholder="Título del producto"
                   />
+                  {errors.title && (<p className='text-red-500 text-sm'>el titulo es requirido</p>)}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
