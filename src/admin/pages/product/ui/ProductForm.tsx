@@ -119,12 +119,10 @@ const onSubmit = (prodictLike: Product) => {
                   <input
                     type="text"
                     {...register('title', {required: true})}
-                    className={
-                      cn(
+                    className={cn(
                         "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
                         {'border-red-500 focus:ring-red-500' : errors.title}
-                      )
-                    }
+                      )}
                     placeholder="Título del producto"
                   />
                   {errors.title && (<p className='text-red-500 text-sm'>el titulo es requirido</p>)}
@@ -137,14 +135,17 @@ const onSubmit = (prodictLike: Product) => {
                     </label>
                     <input
                       type="number"
-                      value={product.price}
-                      // onChange={(e) =>
-                      //   handleInputChange('price', parseFloat(e.target.value))
-                      // }
-                      {...register('price')}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      {...register('price', {
+                        required: true,
+                        min: 1,
+                      })}
+                      className={cn(
+                        "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
+                        {'border-red-500 focus:ring-red-500' : errors.price}
+                      )}
                       placeholder="Precio del producto"
                     />
+                    {errors.price && (<p className='text-red-500 text-sm'>el precio debe ser mayor a 0</p>)}
                   </div>
 
                   <div>
@@ -153,14 +154,17 @@ const onSubmit = (prodictLike: Product) => {
                     </label>
                     <input
                       type="number"
-                      // value={product.stock}
-                      // onChange={(e) =>
-                      //   handleInputChange('stock', parseInt(e.target.value))
-                      // }
-                      {...register('stock')}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      {...register('stock', {
+                        required: true,
+                        min: 1,
+                      })}
+                      className={cn(
+                        "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
+                        {'border-red-500 focus:ring-red-500' : errors.stock}
+                      )}
                       placeholder="Stock del producto"
                     />
+                    {errors.stock && (<p className='text-red-500 text-sm'>el inventario debe ser mayor a 0</p>)}
                   </div>
                 </div>
 
@@ -170,12 +174,17 @@ const onSubmit = (prodictLike: Product) => {
                   </label>
                   <input
                     type="text"
-                    // value={product.slug}
-                    // onChange={(e) => handleInputChange('slug', e.target.value)}
-                    {...register('slug')}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Slug del producto"
+                    {...register('slug', {
+                        required: true,
+                        validate: (value) => !/\s/.test(value) || 'El slug no puede contener espacios'
+                      })}
+                      className={cn(
+                        "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
+                        {'border-red-500 focus:ring-red-500' : errors.slug}
+                      )}
+                      placeholder="Slug del producto"
                   />
+                  {errors.slug && (<p className='text-red-500 text-sm'>{errors.slug.message || "El slug es requerido"}</p>)}
                 </div>
 
                 <div>
@@ -183,10 +192,6 @@ const onSubmit = (prodictLike: Product) => {
                     Género del producto
                   </label>
                   <select
-                    // value={product.gender}
-                    // onChange={(e) =>
-                    //   handleInputChange('gender', e.target.value)
-                    // }
                     {...register('gender')}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   >
@@ -202,15 +207,14 @@ const onSubmit = (prodictLike: Product) => {
                     Descripción del producto
                   </label>
                   <textarea
-                    // value={product.description}
-                    // onChange={(e) =>
-                    //   handleInputChange('description', e.target.value)
-                    // }
-                    {...register('description')}
-                    rows={5}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-                    placeholder="Descripción del producto"
+                    {...register('description', {required: true})}
+                    className={cn(
+                        "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200",
+                        {'border-red-500 focus:ring-red-500' : errors.description}
+                      )}
+                      placeholder="Descripción del producto"
                   />
+                   {errors.description && (<p className='text-red-500 text-sm'>La descripción es requerida</p>)}
                 </div>
               </div>
             </div>
@@ -230,7 +234,6 @@ const onSubmit = (prodictLike: Product) => {
                     >
                       {size}
                       <button
-                        // onClick={() => removeSize(size)}
                         className="ml-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                       >
                         <X className="h-3 w-3" />
