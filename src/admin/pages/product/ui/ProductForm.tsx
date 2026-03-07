@@ -1,6 +1,6 @@
 import { AdminTitle } from '@/admin/Components/AdminTitle';
 import { Button } from '@/components/ui/button';
-import type { Product } from '@/interfaces/product.interface';
+import type { Product, Size } from '@/interfaces/product.interface';
 import { X, SaveAll, Tag,  Upload } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
@@ -13,16 +13,16 @@ interface Props {
   product: Product;
 }
 
-const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXL'];
+const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as Size[];
 
 export const ProductForm = ({ title, subTitle, product }: Props) => {
     const [dragActive, setDragActive] = useState(false);
   
-  const {register, handleSubmit, formState: {errors}} = useForm({
+  const {register, handleSubmit, formState: {errors}, getValues, setValue, watch} = useForm({
     defaultValues: product,
 
   });
-
+const selectSizes = watch('sizes')
 //Todo: remover despuies
 const onSubmit = (prodictLike: Product) => {
   
@@ -43,7 +43,10 @@ const onSubmit = (prodictLike: Product) => {
     // }));
   };
 
-  const addSize = (size: string) => {
+  const addSize = (size: Size) => {
+    const sizeSet = new Set([...product.sizes, size]);
+    sizeSet.add(size);
+    setValue('sizes', Array.from(sizeSet));
     // if (!product.sizes.includes(size)) {
     //   setProduct((prev) => ({
     //     ...prev,
@@ -227,10 +230,14 @@ const onSubmit = (prodictLike: Product) => {
 
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size) => (
+                  {selectSizes.map((size) => (
                     <span
                       key={size}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200"
+                      className={
+                        cn("inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200",
+                        {
+                          'hidden': !selectSizes.includes(size)
+                        })}
                     >
                       {size}
                       <button
@@ -248,14 +255,15 @@ const onSubmit = (prodictLike: Product) => {
                   </span>
                   {availableSizes.map((size) => (
                     <button
+                    type="button"
                       key={size}
-                      // onClick={() => addSize(size)}
-                      // disabled={product.sizes.includes(size)}
-                      // className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                      //   product.sizes.includes(size)
-                      //     ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                      //     : 'bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer'
-                      // }`}
+                      onClick={() => addSize(size)}
+                       disabled={getValues('sizes').includes(size)}
+                       className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
+                          selectSizes.includes(size)
+                           ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                           : 'bg-slate-200 text-slate-700 hover:bg-slate-300 cursor-pointer'
+                       }`}
                     >
                       {size}
                     </button>
