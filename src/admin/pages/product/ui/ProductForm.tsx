@@ -11,11 +11,13 @@ interface Props {
   title: string;
   subTitle: string;
   product: Product;
+
+  onSubmit: (productLike: Partial<Product>) => Promise<void>
 }
 
 const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as Size[];
 
-export const ProductForm = ({ title, subTitle, product }: Props) => {
+export const ProductForm = ({ title, subTitle, product, onSubmit }: Props) => {
     const [dragActive, setDragActive] = useState(false);
   
   const {register, handleSubmit, formState: {errors}, getValues, setValue, watch} = useForm({
@@ -90,8 +92,9 @@ const currentStock = watch('stock');
     console.log(files);
   };
 
+
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between items-center">
         <AdminTitle title={title} subtitle={subTitle} />
         <div className="flex justify-end mb-10 gap-4">
@@ -460,6 +463,6 @@ const currentStock = watch('stock');
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 };
