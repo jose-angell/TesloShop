@@ -12,15 +12,19 @@ interface Props {
   subTitle: string;
   product: Product;
   isPending: boolean
-  onSubmit: (productLike: Partial<Product>) => Promise<void>
+  onSubmit: (productLike: Partial<Product> & {files?: File[]} ) => Promise<void>;
 }
 
 const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as Size[];
 
+interface FormInput extends Product {
+  files?: File[];
+}
+
 export const ProductForm = ({ title, subTitle, product, onSubmit, isPending }: Props) => {
     const [dragActive, setDragActive] = useState(false);
   
-  const {register, handleSubmit, formState: {errors}, getValues, setValue, watch} = useForm({
+  const {register, handleSubmit, formState: {errors}, getValues, setValue, watch} = useForm<FormInput>({
     defaultValues: product,
   });
 
@@ -89,13 +93,16 @@ const currentStock = watch('stock');
     console.log(files);
     if(!files) return;
     setFiles((prev) => [...prev, ...Array.from(files)]);
-
+    const currentFiles = getValues('files') || [];
+    setValue('files', [...currentFiles, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if(!files) return;
     setFiles((prev) => [...prev, ...Array.from(files)]);
+    const currentFiles = getValues('files') || [];
+    setValue('files', [...currentFiles, ...Array.from(files)]);
 
   };
 

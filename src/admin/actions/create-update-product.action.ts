@@ -3,10 +3,10 @@ import type { Product } from "@/interfaces/product.interface";
 
 
 export const createUpdateProductAction = async (
-    productLike: Partial<Product>
+    productLike: Partial<Product> & {files?: File[]}
 ) : Promise<Product> =>{
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {id,  user, images=[], ...rest} = productLike;
+    const {id,  user, images=[], files = [], ...rest} = productLike;
     const isCreating = id === 'new';
     rest.stock = Number(rest.stock || 0);
     rest.stock = Number(rest.price || 0);
