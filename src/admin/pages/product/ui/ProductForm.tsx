@@ -22,8 +22,10 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPending }: P
   
   const {register, handleSubmit, formState: {errors}, getValues, setValue, watch} = useForm({
     defaultValues: product,
-
   });
+
+  const [files, setFiles] = useState<File[]>([]);
+
 const selectSizes = watch('sizes')
 const selectTags = watch('tags')
 const currentStock = watch('stock');
@@ -85,11 +87,16 @@ const currentStock = watch('stock');
     setDragActive(false);
     const files = e.dataTransfer.files;
     console.log(files);
+    if(!files) return;
+    setFiles((prev) => [...prev, ...Array.from(files)]);
+
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(files);
+    if(!files) return;
+    setFiles((prev) => [...prev, ...Array.from(files)]);
+
   };
 
 
@@ -399,6 +406,27 @@ const currentStock = watch('stock');
                       </p>
                     </div>
                   ))}
+                </div>
+              </div>
+               {/* Images por cargar */}
+              <div 
+              className={cn('mt-6 space-y-3', {
+                hidden: files.length === 0,
+              })}>
+                <h3 className="text-sm font-medium text-slate-700">
+                  Imágenes por cargar
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {
+                    files.map((file, index) => (
+                      <img
+                          src={URL.createObjectURL(file)}
+                          alt="Product"
+                          key={index}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                    ))
+                  }
                 </div>
               </div>
             </div>
